@@ -9,7 +9,7 @@ const sendRequest = () => {
     if (contentDiv.textContent !== "") {
         // Send the text content of the "content" div to the "/suggest" endpoint after 1 second
         timeoutId = setTimeout(() => {
-            fetch("/suggest", {
+            fetch(window.api_suggest, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
