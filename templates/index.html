@@ -9,13 +9,21 @@
   <body>
       <div class="container mt-4">
         <h2>Write 10x faster with your AI Cowriter</h2>
-        <label for="type">What are you writing?</label>
-        <select class="form-select mb-2" id="type">
-          <option value="This is a blog post:">Blog post</option>
-          <option value="This is a LinkedIn Post:">LinkedIn Post</option>
-          <option value="This is a Tweet:">Tweet</option>
-          <option value="This is an Email:">Email</option>
-        </select>
+        <div class="row">
+          <div class="col">
+            <label for="type">What are you writing?</label>
+            <select class="form-select mb-2" id="type">
+              <option value="blog post">Blog post</option>
+              <option value="LinkedIn Post">LinkedIn Post</option>
+              <option value="Tweet">Tweet</option>
+              <option value="Email">Email</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="style">In which style? (optional)</label>
+            <input type="text" id="style" class="form-control" placeholder="e.g. inspiring">
+          </div>
+        </div>
         <label for="content">Now just start typing:</label>
         <div class="form-control input" contenteditable="true" id="content"></div>
       </div>

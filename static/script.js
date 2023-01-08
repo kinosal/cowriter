@@ -5,6 +5,7 @@ let suggestion = "";
 
 const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
+const styleInput = document.getElementById("style");
 
 const sendRequest = () => {
     clearTimeout(timeoutId);
@@ -18,7 +19,9 @@ const sendRequest = () => {
                     'X-CSRFToken': csrf,
                 },
                 body: JSON.stringify({
-                    prompt: typeSelect.value + "\n\n" + contentDiv.innerText,
+                    type: typeSelect.value,
+                    style: styleInput.value,
+                    content: contentDiv.innerText,
                 }),
             })
                 .then((response) => response.json())
