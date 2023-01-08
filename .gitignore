@@ -2,8 +2,6 @@
 .env
 __pycache__
 zappa_settings.json
-test.db
 .DS_Store
 .coverage
 /htmlcov
-.mypy_cache

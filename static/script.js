@@ -1,3 +1,5 @@
+let suggest_endpoint = document.getElementsByName("suggest_endpoint")[0].content;
+let csrf = document.getElementsByName("csrf-token")[0].content;
 let timeoutId;
 let suggestion = "";
 
@@ -9,10 +11,11 @@ const sendRequest = () => {
     if (contentDiv.textContent !== "") {
         // Send the text content of the "content" div to the "/suggest" endpoint after 1 second
         timeoutId = setTimeout(() => {
-            fetch(window.api_suggest, {
+            fetch(suggest_endpoint, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf,
                 },
                 body: JSON.stringify({
                     prompt: typeSelect.value + "\n\n" + contentDiv.innerText,
