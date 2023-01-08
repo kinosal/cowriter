@@ -1,7 +1,7 @@
 let suggest_endpoint = document.getElementsByName("suggest_endpoint")[0].content;
 let csrf = document.getElementsByName("csrf-token")[0].content;
 let timeout;
-let suggestion = "";
+let suggesting = false;
 
 const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
@@ -27,27 +27,32 @@ const sendRequest = (wait = 1000) => {
                 .then((response) => response.json())
                 .then((data) => {
                     // Add the suggestion text in grey color after the existing text in the content div
-                    const newText = document.createElement("span");
-                    newText.style.color = "#adb5bd";
-                    newText.innerText = data.suggestion;
-                    contentDiv.appendChild(newText);
-                    suggestion = data.suggestion;
+                    const suggestion = document.createElement("span");
+                    suggestion.id = "suggestion";
+                    suggestion.style.color = "#adb5bd";
+                    suggestion.innerText = data.suggestion;
+                    contentDiv.appendChild(suggestion);
+                    suggesting = true;
                 });
         }, wait);
     }
 };
 
 contentDiv.addEventListener("input", (event) => {
-    sendRequest(500);
+    // Send a request after the user stops typing
+    sendRequest(400);
 });
 
 contentDiv.addEventListener("keydown", (event) => {
     // If the "Tab" key is pressed, turn the new text black and move the cursor to the end
-    if ((event.key === "Tab"  || event.key === "Enter") && suggestion !== "") {
+    if ((event.key === "Tab"  || event.key === "Enter") && suggesting === true) {
         event.preventDefault();
-        const newText = contentDiv.lastChild;
-        newText.style.color = "#212529";
-        contentDiv.focus();
+        const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
+        suggestions.forEach((suggestion) => {
+            suggestion.id = "accepted";
+            suggestion.style.color = "#212529";
+        });
+        suggesting = false;
         // Move the cursor to the end of the text
         const range = document.createRange();
         range.selectNodeContents(contentDiv);
@@ -55,16 +60,13 @@ contentDiv.addEventListener("keydown", (event) => {
         const selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-        suggestion = "";
-        // Send a new request one second after the previous response has been accepted
-        sendRequest(1000);
-    } else if (suggestion !== "") {
+        // Send a new request after the previous response has been accepted
+        sendRequest(800);
+    } else if (suggesting === true) {
         // If any other key is pressed, remove the new text and don't move the cursor
         event.preventDefault();
-        const newText = contentDiv.lastChild;
-        newText.remove();
-        suggestion = "";
-        // Send a new request two seconds after the previous response has been rejected
-        sendRequest(1000);
+        const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
+        suggestions.forEach((suggestion) => suggestion.remove());
+        suggesting = false;
     }
 });
