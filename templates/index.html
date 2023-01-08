@@ -1,5 +1,7 @@
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="suggest_endpoint" content="{{ url_for('suggest') }}" />
     <title>Cowriter</title>
@@ -20,11 +22,12 @@
             </select>
           </div>
           <div class="col">
-            <label for="style">In which style? (optional)</label>
+            <label for="style">In which style? (opt.)</label>
             <input type="text" id="style" class="form-control" placeholder="e.g. inspiring">
           </div>
         </div>
-        <label for="content">Now just start typing:</label>
+        <label for="content">Now just start typing</label>
+        <p>(hit "tab" or "enter" to accept a suggestion):</p>
         <div class="form-control input" contenteditable="true" id="content"></div>
       </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
