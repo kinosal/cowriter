@@ -25,21 +25,22 @@ def index():
 @app.route("/suggest", methods=["POST"])
 def suggest():
     """Suggest a continuation of the prompt.
-    Requires a JSON body with a "type", "content" and optional "style" field.
+    Requires a JSON body with a "type", "content" and optional "topic" or "style" fields.
     """
     print(request.json)
     style = request.json["style"] + " " if request.json["style"] else ""
-    prompt = f"This is a {style}{request.json['type']}:\n\n{request.json['content']}"
-    print(prompt)
+    prompt = (
+        f"This is a {style}{request.json['type']} about {request.json['topic']}:"
+        f"\n\n{request.json['content']}"
+    )
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt[-1024:],
         max_tokens=16,
-        temperature=0.5,
+        temperature=0.7,
         top_p=1,
     )
     suggestion = response["choices"][0]["text"]
-    print(suggestion)
     return {"suggestion": suggestion}
 
 

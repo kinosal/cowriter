@@ -1,3 +1,6 @@
 .input {
     min-height: 200px;
 }
+#main {
+    max-width: 800px;
+}

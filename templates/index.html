@@ -7,13 +7,24 @@
     <title>Cowriter</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
   </head>
   <body>
-      <div class="container mt-4">
-        <h2>Write 10x faster with your AI Cowriter</h2>
-        <div class="row">
+      <div class="container mt-4 mt-md-5" id="main">
+        <div class="row mb-3">
+          <h2 class="fw-bold">Write 10x faster with your AI Cowriter</h2>
+        </div>
+        <div class="row mb-3">
+          <p class="text-muted">
+            This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion - powered by OpenAI's <a href="https://beta.openai.com/docs/models/overview" target="_blank">GPT-3 model</a> - will suggest words and phrases to complete your text. Suggestions will show up in "grey" shortly after you type something. You can accept them by hitting "tab" or "enter"/"return". If you press any other key the suggestion will disappear.
+          </p>
+          <p class="text-muted">
+            You can find the code on <a href="https://github.com/kinosal/cowriter" target="_blank">GitHub</a> and the author on <a href="https://twitter.com/kinosal" target="_blank">Twitter</a>.
+          </p>
+        </div>
+        <div class="row mb-3">
           <div class="col">
-            <label for="type">What are you writing?</label>
+            <label for="type" class="mb-2">What are you writing?</label>
             <select class="form-select mb-2" id="type">
               <option value="blog post">Blog post</option>
               <option value="LinkedIn Post">LinkedIn Post</option>
@@ -21,13 +32,25 @@
               <option value="Email">Email</option>
             </select>
           </div>
-          <div class="col">
-            <label for="style">In which style? (opt.)</label>
+        </div>
+        <div class="row mb-3">
+          <div data-bs-toggle="collapse" data-bs-target=".collapse">
+            <p type="button">
+              Optional controls <i class="bi bi-chevron-expand"></i>
+            </p>
+          </div>
+          <div class="collapse mb-3">
+            <label for="style" class="mb-2">Do you have a topic in mind?</label>
+            <input type="text" id="topic" class="form-control" placeholder="e.g. AI">
+          </div>
+          <div class="collapse mb-3">
+            <label for="style" class="mb-2">Any particular writing style?</label>
             <input type="text" id="style" class="form-control" placeholder="e.g. inspiring">
           </div>
         </div>
-        <label for="content">Now just start typing</label>
-        <p>(hit "tab" or "enter" to accept a suggestion):</p>
+        <label for="content" class="mb-2">
+          Now just start typing:
+        </label>
         <div class="form-control input" contenteditable="true" id="content"></div>
       </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>

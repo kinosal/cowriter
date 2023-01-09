@@ -5,6 +5,7 @@ let suggesting = false;
 
 const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
+const topicInput = document.getElementById("topic");
 const styleInput = document.getElementById("style");
 
 const sendRequest = (wait = 1000) => {
@@ -20,6 +21,7 @@ const sendRequest = (wait = 1000) => {
                 },
                 body: JSON.stringify({
                     type: typeSelect.value,
+                    topic: topicInput.value,
                     style: styleInput.value,
                     content: contentDiv.innerText,
                 }),
@@ -40,7 +42,7 @@ const sendRequest = (wait = 1000) => {
 
 contentDiv.addEventListener("input", (event) => {
     // Send a request after the user stops typing
-    sendRequest(400);
+    sendRequest(800);
 });
 
 contentDiv.addEventListener("keydown", (event) => {
@@ -61,7 +63,7 @@ contentDiv.addEventListener("keydown", (event) => {
         selection.removeAllRanges();
         selection.addRange(range);
         // Send a new request after the previous response has been accepted
-        sendRequest(800);
+        sendRequest(400);
     } else if (suggesting === true) {
         // If any other key is pressed, remove the new text and don't move the cursor
         event.preventDefault();
