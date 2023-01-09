@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 from flask_wtf.csrf import CSRFProtect
 import openai
 
@@ -15,6 +15,11 @@ app.config.update(
 )
 csrf = CSRFProtect()
 csrf.init_app(app)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(directory="static", path="favicon.ico")
 
 
 @app.route("/")
