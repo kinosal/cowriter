@@ -45,8 +45,7 @@ def suggest():
         temperature=0.7,
         top_p=1,
     )
-    suggestion = response["choices"][0]["text"]
-    return {"suggestion": suggestion}
+    return {"suggestion": response["choices"][0]["text"]}
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ const sendRequest = (wait = 1000) => {
 
 // Send a request on new input
 contentDiv.addEventListener("input", (event) => {
-    sendRequest(800);
+    sendRequest(600);
 });
 
 contentDiv.addEventListener("keydown", (event) => {
@@ -70,7 +70,7 @@ contentDiv.addEventListener("keydown", (event) => {
         selection.removeAllRanges();
         selection.addRange(range);
         // Send a new request after the previous response has been accepted
-        sendRequest(400);
+        sendRequest(200);
     } else if (suggesting === true) {
         // If any other key is pressed, remove the new text and don't move the cursor
         event.preventDefault();
