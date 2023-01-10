@@ -4,7 +4,9 @@
 import os
 
 # Import from 3rd party libraries
+import sentry_sdk
 from flask import Flask, request, render_template, send_from_directory
+from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_wtf.csrf import CSRFProtect
 import func_timeout
 
@@ -12,6 +14,11 @@ import func_timeout
 import oai
 
 # Instantiate and configure Flask app
+sentry_sdk.init(
+    dsn=os.environ.get("SENTRY_DSN"),
+    integrations=[FlaskIntegration()],
+    traces_sample_rate=1.0
+)
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY=os.environ.get("FLASK_SECRET"),

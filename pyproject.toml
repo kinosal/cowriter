@@ -11,6 +11,7 @@ openai = "^0.26.0"
 zappa = "^0.56.1"
 Flask-WTF = "^1.0.1"
 func-timeout = "^4.3.5"
+sentry-sdk = {version = "^1.12.1", extras = ["flask"]}
 
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.21.0"
