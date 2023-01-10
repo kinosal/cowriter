@@ -14,9 +14,11 @@ const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
 const topicInput = document.getElementById("topic");
 const styleInput = document.getElementById("style");
+const errorDiv = document.getElementById("error");
 
 // Send a request to the suggest endpoint after wait
 const sendRequest = (wait = 1000) => {
+    errorDiv.setAttribute("hidden", "");
     clearTimeout(timeout);
     if (contentDiv.textContent !== "") {
         timeout = setTimeout(() => {
@@ -32,18 +34,22 @@ const sendRequest = (wait = 1000) => {
                     style: styleInput.value,
                     content: contentDiv.innerText,
                 }),
+            }).then((response) => {
+                if (response.ok) return response.json();
+                else return response.text().then(text => {throw new Error(text)})
+            }).then((data) => {
+                // Add the suggestion text in grey color after the existing text in the content div
+                const suggestion = document.createElement("span");
+                suggestion.id = "suggestion";
+                suggestion.classList.add("text-muted");
+                suggestion.innerText = data.suggestion;
+                contentDiv.appendChild(suggestion);
+                suggesting = true;
+            }).catch((error) => {
+                errorDiv.innerText = error;
+                errorDiv.removeAttribute("hidden");
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    // Add the suggestion text in grey color after the existing text in the content div
-                    const suggestion = document.createElement("span");
-                    suggestion.id = "suggestion";
-                    suggestion.classList.add("text-muted");
-                    suggestion.innerText = data.suggestion;
-                    contentDiv.appendChild(suggestion);
-                    suggesting = true;
-                });
-        }, wait);
+        }, wait)
     }
 };
 
