@@ -24,6 +24,10 @@ const sendRequest = (wait = 1000) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
         requesting = true;
+        // Remove potentially still remaining suggestions
+        const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
+        suggestions.forEach((suggestion) => suggestion.remove());
+        suggestion = "";
         fetch(suggest_endpoint, {
             method: "POST",
             headers: {
@@ -39,17 +43,21 @@ const sendRequest = (wait = 1000) => {
             }),
         }).then((response) => {
             requesting = false;
-            if (response.ok) return response.json();
-            else return response.text().then(text => {throw new Error(text)})
+            if (!requesting) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {throw new Error(text)})
+                }
+            }
         }).then((data) => {
             if (!requesting) {
-                // Add the suggestion text in grey color after the existing text
-                // in the content div
-                const suggestion_span = document.createElement("span");
-                suggestion_span.id = "suggestion";
-                suggestion_span.classList.add("text-muted");
-                suggestion_span.innerText = data.suggestion;
-                contentDiv.appendChild(suggestion_span);
+                // Add the suggestion text in grey after the existing content
+                const new_suggestion = document.createElement("span");
+                new_suggestion.id = "suggestion";
+                new_suggestion.classList.add("text-muted");
+                new_suggestion.innerText = data.suggestion;
+                contentDiv.appendChild(new_suggestion);
                 suggestion = data.suggestion;
             }
         }).catch((error) => {
