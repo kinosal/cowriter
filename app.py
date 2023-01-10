@@ -35,14 +35,28 @@ def index():
 @app.route("/suggest", methods=["POST"])
 def suggest() -> dict:
     """Suggest a continuation of the prompt.
-    Requires a JSON body with a "type", "content" and optional "topic" or "style" fields.
+
+    Expected request body:
+        {
+            "type": str,
+            "content": str,
+            "topic": str (optional),
+            "style": str (optional),
+            "notes": str (optional)
+        }
     """
     app.logger.info(request.json)
-    style = request.json["style"] + " " if request.json["style"] else ""
+    style_prompt = request.json["style"] + " " if request.json["style"] else ""
+    topic_prompt = f" about {request.json['topic']}" if request.json["topic"] else ""
+    if request.json["notes"]:
+        notes_prompt = f", considering the following notes:\n{request.json['notes']}" 
+    else:
+        notes_prompt = ""
     prompt = (
-        f"This is a {style}{request.json['type']} about {request.json['topic']}:"
-        f"\n\n{request.json['content']}"
+        f"Write a {style_prompt}{request.json['type']}{topic_prompt}"
+        f"{notes_prompt}:\n\n{request.json['content']}"
     )[-1024:]
+    print(prompt)
     openai = oai.Openai(app.logger)
     flagged = openai.moderate(prompt)
     if flagged:
