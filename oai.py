@@ -41,11 +41,10 @@ class Openai:
         }
         """
         kwargs = {
-            "engine": "text-davinci-003",
+            "model": "text-davinci-003",
             "prompt": prompt,
-            "temperature": temperature,
             "max_tokens": max_tokens,
-            "top_p": 1,  # default
+            "temperature": temperature,
         }
         try:
             response = openai.Completion.create(**kwargs)

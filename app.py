@@ -59,10 +59,10 @@ def suggest() -> dict:
     if request.json["notes"]:
         notes_prompt = f", considering the following notes:\n{request.json['notes']}" 
     else:
-        notes_prompt = ""
+        notes_prompt = ":"
     prompt = (
         f"Write a {style_prompt}{request.json['type']}{topic_prompt}"
-        f"{notes_prompt}:\n\n{request.json['content']}"
+        f"{notes_prompt}\n\n{request.json['content']}"
     )[-1024:]
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
