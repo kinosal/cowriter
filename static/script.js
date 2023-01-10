@@ -81,7 +81,6 @@ contentDiv.addEventListener("keydown", (event) => {
         sendRequest(200);
     } else if (suggesting === true) {
         // If any other key is pressed, remove the new text and don't move the cursor
-        event.preventDefault();
         const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
         suggestions.forEach((suggestion) => suggestion.remove());
         suggesting = false;
