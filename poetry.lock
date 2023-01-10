@@ -221,6 +221,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "func-timeout"
+version = "4.3.5"
+description = "Python module which allows you to specify timeouts when calling any existing function. Also provides support for stoppable-threads"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "hjson"
 version = "3.1.0"
 description = "Hjson, a user interface for JSON."
@@ -607,7 +615,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c6e769a355f31d2825975465ce5e07c9cde6ba8121f3235544e46b39d04b6e7a"
+content-hash = "e6cfa536eed7d65694884680e32c85c307d93c99ed8f5793567f6a06043b176e"
 
 [metadata.files]
 aiohttp = []
@@ -627,6 +635,7 @@ durationpy = []
 flask = []
 flask-wtf = []
 frozenlist = []
+func-timeout = []
 hjson = []
 idna = []
 importlib-metadata = []

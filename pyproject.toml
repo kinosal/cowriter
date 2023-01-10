@@ -10,6 +10,7 @@ Flask = "^2.2.2"
 openai = "^0.26.0"
 zappa = "^0.56.1"
 Flask-WTF = "^1.0.1"
+func-timeout = "^4.3.5"
 
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.21.0"

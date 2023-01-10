@@ -6,6 +6,7 @@ import os
 # Import from 3rd party libraries
 from flask import Flask, request, render_template, send_from_directory
 from flask_wtf.csrf import CSRFProtect
+import func_timeout
 
 # Import modules
 import oai
@@ -62,7 +63,11 @@ def suggest() -> dict:
     # if flagged:
     #     app.logger.info("Prompt flagged")
     #     return "Inappropriate prompt", 400
-    completion = openai.complete(prompt)
+    try:
+        completion = func_timeout.func_timeout(5, openai.complete, args=(prompt,))
+    except func_timeout.exceptions.FunctionTimedOut:
+        app.logger.error("OpenAI timed out")
+        return "OpenAI timed out", 500
     if completion["status"] == "error":
         app.logger.error(completion["text"])
         return completion["text"], 500
