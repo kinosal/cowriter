@@ -56,13 +56,17 @@ def suggest() -> dict:
         f"Write a {style_prompt}{request.json['type']}{topic_prompt}"
         f"{notes_prompt}:\n\n{request.json['content']}"
     )[-1024:]
-    print(prompt)
     openai = oai.Openai(app.logger)
-    flagged = openai.moderate(prompt)
-    if flagged:
-        app.logger.info("Prompt flagged")
-        return "Inappropriate prompt", 400
-    return {"suggestion": openai.complete(prompt)}
+    # TODO: Add moderation without making the overall response time too slow
+    # flagged = openai.moderate(prompt)
+    # if flagged:
+    #     app.logger.info("Prompt flagged")
+    #     return "Inappropriate prompt", 400
+    completion = openai.complete(prompt)
+    if completion["status"] == "error":
+        app.logger.error(completion["text"])
+        return completion["text"], 500
+    return {"suggestion": completion["text"]}
 
 
 if __name__ == "__main__":

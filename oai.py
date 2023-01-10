@@ -19,7 +19,7 @@ class Openai:
         """Call OpenAI GPT Moderation with text prompt.
         Args:
             prompt: text prompt
-        Return: boolean if flagged
+        Returns: boolean if flagged
         """
         try:
             response = openai.Moderation.create(prompt)
@@ -27,12 +27,18 @@ class Openai:
 
         except Exception as e:
             self.logger.error(f"OpenAI API error: {e}")
+            return f"OpenAI API error: {e}"
 
-    def complete(self, prompt: str, temperature: float = 0.7, max_tokens: int = 16) -> str:
+    def complete(
+        self, prompt: str, temperature: float = 0.7, max_tokens: int = 16
+    ) -> dict:
         """Call OpenAI GPT Completion with text prompt.
         Args:
             prompt: text prompt
-        Return: predicted response text
+        Returns: {
+            "status": status code, 'response' or 'error'
+            "text": predicted response or error text
+        }
         """
         kwargs = {
             "engine": "text-davinci-003",
@@ -43,7 +49,14 @@ class Openai:
         }
         try:
             response = openai.Completion.create(**kwargs)
-            return response["choices"][0]["text"]
+            return {
+                "status": "response",
+                "text": response["choices"][0]["text"],
+            }
 
         except Exception as e:
             self.logger.error(f"OpenAI API error: {e}")
+            return {
+                "status": "error",  
+                "text": f"OpenAI API error: {e}",
+            }
