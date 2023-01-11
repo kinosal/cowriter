@@ -12,6 +12,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class Openai:
     """OpenAI Connector."""
+
     def __init__(self, logger) -> None:
         self.logger = logger
 
@@ -30,24 +31,25 @@ class Openai:
             return f"OpenAI API error: {e}"
 
     def complete(
-        self, prompt: str, temperature: float = 0.7, max_tokens: int = 20
+        self, prompt: str, temperature: float = 0.7, max_tokens: int = 24
     ) -> dict:
         """Call OpenAI GPT Completion with text prompt.
         Args:
             prompt: text prompt
+            temperature: float between 0 and 1
+            max_tokens: int between 1 and 2048
         Returns: {
             "status": status code, 'response' or 'error'
             "text": predicted response or error text
         }
         """
-        kwargs = {
-            "model": "text-davinci-003",
-            "prompt": prompt,
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-        }
         try:
-            response = openai.Completion.create(**kwargs)
+            response = openai.Completion.create(
+                model="text-davinci-003",
+                prompt=prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
             return {
                 "status": "response",
                 "text": response["choices"][0]["text"],
@@ -56,6 +58,6 @@ class Openai:
         except Exception as e:
             self.logger.error(f"OpenAI API error: {e}")
             return {
-                "status": "error",  
+                "status": "error",
                 "text": f"OpenAI API error: {e}",
             }

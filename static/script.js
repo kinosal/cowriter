@@ -15,6 +15,7 @@ const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
 const topicInput = document.getElementById("topic");
 const styleInput = document.getElementById("style");
+const audienceInput = document.getElementById("audience");
 const notesInput = document.getElementById("notes");
 const errorDiv = document.getElementById("error");
 const customType = document.getElementById("custom-type");
@@ -49,6 +50,7 @@ const sendRequest = (wait = 1000) => {
                 type: type_value,
                 topic: topicInput.value,
                 style: styleInput.value,
+                audience: audienceInput.value,
                 notes: notesInput.value,
                 content: contentDiv.innerText,
             }),

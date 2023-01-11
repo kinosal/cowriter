@@ -27,7 +27,7 @@ if not app.config["DEBUG"]:
     sentry_sdk.init(
         dsn=os.environ.get("SENTRY_DSN"),
         integrations=[FlaskIntegration()],
-        traces_sample_rate=1.0
+        traces_sample_rate=1.0,
     )
 
 
@@ -51,20 +51,34 @@ def suggest() -> dict:
             "content": str,
             "topic": str (optional),
             "style": str (optional),
+            "audience": str (optional),
             "notes": str (optional)
         }
     """
     app.logger.info(request.json)
-    style_prompt = request.json["style"] + " " if request.json["style"] else ""
-    topic_prompt = f" about {request.json['topic']}" if request.json["topic"] else ""
-    if request.json["notes"]:
-        notes_prompt = f", considering the following notes:\n{request.json['notes']}"
-    else:
-        notes_prompt = ":"
+    any_criteria = (
+        request.json["topic"]
+        or request.json["style"]
+        or request.json["audience"]
+        or request.json["notes"]
+    )
     prompt = (
-        f"Write a {style_prompt}{request.json['type']}{topic_prompt}"
-        f"{notes_prompt}\n\n{request.json['content']}"
-    )[-1000:]
+        "You are an expert and thought leader as well as an excellent copywriter. "
+        "Your content is concise, insightful and engaging."
+        "You structure your text to be easy to read and understand, "
+        "e.g. by using headlines and lists.\n"
+        "\n"
+        f"Now you are writing a {request.json['type']}"
+        f"{' with these criteria' if any_criteria else ''}:\n"
+        f"{'Topic:' + request.json['topic'] + chr(10) if request.json['topic'] else ''}"
+        f"{'Style: ' + request.json['style'] + chr(10) if request.json['style'] else ''}"
+        f"{'Audience: ' + request.json['audience'] + chr(10) if request.json['audience'] else ''}"
+        f"{'Other notes: ' + request.json['notes'] + chr(10) if request.json['notes'] else ''}"
+        "\n"
+        "Here is your final version:\n"
+        "\n"
+        f"{request.json['content']}"
+    )[-2000:]
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
     # flagged = openai.moderate(prompt)
