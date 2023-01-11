@@ -38,7 +38,7 @@ const sendRequest = (wait = 1000) => {
         // Remove potentially still remaining suggestions
         const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
         suggestions.forEach((suggestion) => suggestion.remove());
-        suggestion = "";
+        // Send the request
         const type_value = typeSelect.value === "custom" ? customType.value : typeSelect.value;
         fetch(suggest_endpoint, {
             method: "POST",
@@ -65,6 +65,9 @@ const sendRequest = (wait = 1000) => {
             }
         }).then((data) => {
             if (!requesting) {
+                // Remove potentially still remaining suggestions
+                const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
+                suggestions.forEach((suggestion) => suggestion.remove());
                 // Add the suggestion text in grey after the existing content
                 const new_suggestion = document.createElement("span");
                 new_suggestion.id = "suggestion";
@@ -83,7 +86,7 @@ const sendRequest = (wait = 1000) => {
 // Send a request on new input
 contentDiv.addEventListener("input", (event) => {
     if (contentDiv.textContent !== "" && suggestion === "") {
-        sendRequest(500);
+        sendRequest(600);
     }
 });
 
