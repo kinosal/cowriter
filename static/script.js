@@ -1,4 +1,4 @@
-// Set the theme of the page based on the user's system preferences
+// Set the Bootstrap theme of the page based on the user's system preferences
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.documentElement.setAttribute('data-bs-theme', 'dark')
 } else {
@@ -17,6 +17,16 @@ const topicInput = document.getElementById("topic");
 const styleInput = document.getElementById("style");
 const notesInput = document.getElementById("notes");
 const errorDiv = document.getElementById("error");
+const customType = document.getElementById("custom-type");
+
+// Show custom type input if "custom" is selected
+typeSelect.addEventListener("change", (event) => {
+    if (typeSelect.value === "custom") {
+        customType.removeAttribute("hidden");
+    } else {
+        customType.setAttribute("hidden", "");
+    }
+});
 
 // Send a request to the suggest endpoint after wait
 const sendRequest = (wait = 1000) => {
@@ -28,6 +38,7 @@ const sendRequest = (wait = 1000) => {
         const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
         suggestions.forEach((suggestion) => suggestion.remove());
         suggestion = "";
+        const type_value = typeSelect.value === "custom" ? customType.value : typeSelect.value;
         fetch(suggest_endpoint, {
             method: "POST",
             headers: {
@@ -35,7 +46,7 @@ const sendRequest = (wait = 1000) => {
                 'X-CSRFToken': csrf,
             },
             body: JSON.stringify({
-                type: typeSelect.value,
+                type: type_value,
                 topic: topicInput.value,
                 style: styleInput.value,
                 notes: notesInput.value,

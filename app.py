@@ -4,8 +4,8 @@
 import os
 
 # Import from 3rd party libraries
-import sentry_sdk
 from flask import Flask, request, render_template, send_from_directory
+import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_wtf.csrf import CSRFProtect
 import func_timeout
@@ -14,11 +14,6 @@ import func_timeout
 import oai
 
 # Instantiate and configure Flask app
-sentry_sdk.init(
-    dsn=os.environ.get("SENTRY_DSN"),
-    integrations=[FlaskIntegration()],
-    traces_sample_rate=1.0
-)
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY=os.environ.get("FLASK_SECRET"),
@@ -28,6 +23,12 @@ app.config.update(
 )
 csrf = CSRFProtect()
 csrf.init_app(app)
+if not app.config["DEBUG"]:
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_DSN"),
+        integrations=[FlaskIntegration()],
+        traces_sample_rate=1.0
+    )
 
 
 @app.route("/favicon.ico")
@@ -57,13 +58,13 @@ def suggest() -> dict:
     style_prompt = request.json["style"] + " " if request.json["style"] else ""
     topic_prompt = f" about {request.json['topic']}" if request.json["topic"] else ""
     if request.json["notes"]:
-        notes_prompt = f", considering the following notes:\n{request.json['notes']}" 
+        notes_prompt = f", considering the following notes:\n{request.json['notes']}"
     else:
         notes_prompt = ":"
     prompt = (
         f"Write a {style_prompt}{request.json['type']}{topic_prompt}"
         f"{notes_prompt}\n\n{request.json['content']}"
-    )[-1024:]
+    )[-1000:]
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
     # flagged = openai.moderate(prompt)
