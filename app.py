@@ -55,10 +55,20 @@ def suggest() -> dict:
             "notes": str (optional)
         }
     """
+    session["n_requests"] = session.get("n_requests", 0) + 1
     request_data = request.json
-    request_data["session"] = session["csrf_token"]
+    request_data["session_token"] = session["csrf_token"]
+    request_data["n_session_requests"] = session["n_requests"]
     request_data["ip"] = request.remote_addr
     app.logger.info(request_data)
+
+    if session["n_requests"] % 50 == 0:
+        return "Too many requests, please wait a few seconds", 429
+    if session["n_requests"] <= 15:
+        model = "text-davinci-003"
+    else:
+        model = "text-curie-001"
+
     any_criteria = (
         request.json["topic"]
         or request.json["style"]
@@ -66,12 +76,12 @@ def suggest() -> dict:
         or request.json["notes"]
     )
     prompt = (
-        "You are an expert and thought leader as well as an excellent copywriter. "
-        "Your content is concise, insightful and engaging."
+        "You are an expert in your field and an excellent writer. "
+        "Your content is insightful and engaging."
         "You structure your text to be easy to read and understand, "
-        "e.g. by using headlines and lists.\n"
+        "for example by using headlines and lists.\n"
         "\n"
-        f"Now you are writing a {request.json['type']}"
+        f"You are now writing a {request.json['type']}"
         f"{' with these criteria' if any_criteria else ''}:\n"
         f"{'Topic:' + request.json['topic'] + chr(10) if request.json['topic'] else ''}"
         f"{'Style: ' + request.json['style'] + chr(10) if request.json['style'] else ''}"
@@ -89,7 +99,7 @@ def suggest() -> dict:
     #     app.logger.info("Prompt flagged")
     #     return "Inappropriate prompt", 400
     try:
-        completion = func_timeout.func_timeout(5, openai.complete, args=(prompt,))
+        completion = func_timeout.func_timeout(5, openai.complete, args=(prompt, model))
     except func_timeout.exceptions.FunctionTimedOut:
         app.logger.error("OpenAI timed out")
         return "OpenAI timed out", 500

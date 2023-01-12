@@ -31,11 +31,16 @@ class Openai:
             return f"OpenAI API error: {e}"
 
     def complete(
-        self, prompt: str, temperature: float = 0.7, max_tokens: int = 24
+        self,
+        prompt: str,
+        model: str = "text-davinci-003",
+        temperature: float = 0.7,
+        max_tokens: int = 24,
     ) -> dict:
         """Call OpenAI GPT Completion with text prompt.
         Args:
             prompt: text prompt
+            model: OpenAI model name
             temperature: float between 0 and 1
             max_tokens: int between 1 and 2048
         Returns: {
@@ -45,9 +50,8 @@ class Openai:
         """
         try:
             response = openai.Completion.create(
-                # model="text-curie-001",
-                model="text-davinci-003",
                 prompt=prompt,
+                model=model,
                 temperature=temperature,
                 max_tokens=max_tokens,
             )
