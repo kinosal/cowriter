@@ -11,6 +11,7 @@ let csrf = document.getElementsByName("csrf-token")[0].content;
 let timeout;
 let suggestion = "";
 let requesting = false;
+let last_key = "";
 const contentDiv = document.getElementById("content");
 const typeSelect = document.getElementById("type");
 const topicInput = document.getElementById("topic");
@@ -85,12 +86,18 @@ const sendRequest = (wait = 1000) => {
 
 // Send a request on new input
 contentDiv.addEventListener("input", (event) => {
-    if (contentDiv.textContent !== "" && suggestion === "") {
-        sendRequest(600);
+    if (
+        contentDiv.textContent !== ""
+        && suggestion === ""
+        && last_key !== "Backspace"
+        && last_key !== "Delete"
+    ) {
+        sendRequest(500);
     }
-});
+})
 
 contentDiv.addEventListener("keydown", (event) => {
+    last_key = event.key;
     if (suggestion !== "") {
         if (event.key === "Tab"  || event.key === "Enter") {
             // If the "Tab" or "Enter" key is pressed,
@@ -124,4 +131,4 @@ contentDiv.addEventListener("keydown", (event) => {
             suggestion = "";
         }
     }
-});
+})
