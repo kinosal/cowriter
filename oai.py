@@ -45,6 +45,7 @@ class Openai:
         """
         try:
             response = openai.Completion.create(
+                # model="text-curie-001",
                 model="text-davinci-003",
                 prompt=prompt,
                 temperature=temperature,

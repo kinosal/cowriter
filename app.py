@@ -4,7 +4,7 @@
 import os
 
 # Import from 3rd party libraries
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, request, render_template, send_from_directory, session
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_wtf.csrf import CSRFProtect
@@ -55,7 +55,10 @@ def suggest() -> dict:
             "notes": str (optional)
         }
     """
-    app.logger.info(request.json)
+    request_data = request.json
+    request_data["session"] = session["csrf_token"]
+    request_data["ip"] = request.remote_addr
+    app.logger.info(request_data)
     any_criteria = (
         request.json["topic"]
         or request.json["style"]
