@@ -3,27 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="description" content="Write 10x faster with AI-generated autocomplete text suggestions">
-    <meta name="keywords" content="AI, OpenAI, GPT, Cowriter, Blog, LinkedIn, Twitter, Email">
+    <meta name="keywords" content="AI, OpenAI, GPT, Cowriter, Copywriter, Copywriting, Blog, LinkedIn, Twitter, Email">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="suggest_endpoint" content="{{ url_for('suggest') }}" />
     <title>AI Cowriter</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <div class="container mt-4 mt-md-5" id="main">
       <div class="row mb-3">
-        <h2 class="fw-bold">Write 10x faster with your AI Cowriter</h2>
+        <div class="col-8">
+          <h1 class="fw-bold">Write 10x faster<br/>with your AI Cowriter</h1>
+        </div>
+        <div class="col-4" style="text-align: right;">
+          <img src="{{ url_for('static', filename='logo-nobg-trim.png') }}" class="img-fluid"  style="max-height: 100px;" alt="Cowriter Logo">
+        </div>
       </div>
       <div class="row mb-3">
         <p class="text-muted">
-          This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion - powered by OpenAI's <a href="https://beta.openai.com/docs/models/overview" target="_blank">GPT-3 model</a> - will suggest words and phrases to complete your text. Suggestions will show up in "grey" shortly after you type something. You can accept them by hitting "tab" or "enter"/"return". If you press any other key the suggestion will disappear.
-        </p>
-        <p class="text-muted">
-          You can find the code on <a href="https://github.com/kinosal/cowriter" target="_blank">GitHub</a> and the author on <a href="https://twitter.com/kinosal" target="_blank">Twitter</a>.
+          This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion will suggest words and phrases to complete your text. Suggestions will show up in "grey" shortly after you type something. You can accept them by hitting "tab" or "enter"/"return". If you press any other key the suggestion will disappear.
         </p>
       </div>
       <div class="row mb-3">
@@ -70,6 +72,16 @@
           <div id="error" class="alert alert-danger" role="alert" hidden></div>
           <div class="form-control input mb-3" contenteditable="true" id="content"></div>
         </div>
+      </div>
+      <footer class="footer mt-auto py-3">
+        <hr/>
+        <div class="row">
+          <div class="col">
+            <p class="text-muted">
+              Find the code on <a href="https://github.com/kinosal/cowriter" target="_blank">GitHub</a> and the author on <a href="https://twitter.com/kinosal" target="_blank">Twitter</a>.
+            </p>
+        </div>
+      </footer>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
