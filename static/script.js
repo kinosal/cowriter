@@ -96,6 +96,13 @@ contentDiv.addEventListener("input", (event) => {
     }
 })
 
+// Clear style of pasted text
+// TODO: Test (style copy seen with some users but can't reproduce)
+// contentDiv.addEventListener("paste", (event) => {
+//     event.preventDefault();
+//     contentDiv.append(event.clipboardData.getData("text/plain"));
+// })
+
 contentDiv.addEventListener("keydown", (event) => {
     last_key = event.key;
     if (suggestion !== "") {

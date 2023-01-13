@@ -69,29 +69,17 @@ def suggest() -> dict:
     else:
         model = "text-curie-001"
 
-    any_criteria = (
-        request.json["topic"]
-        or request.json["style"]
-        or request.json["audience"]
-        or request.json["notes"]
-    )
+    style_prompt = f", {request.json['style']}" if request.json["style"] else ""
+    audience_prompt = f" for {request.json['audience']}" if request.json["audience"] else ""
+    topic_prompt = f"{request.json['topic']}" if request.json["topic"] else "an interesting topic"
+    notes_prompt = f", considering these notes:\n{request.json['notes']}" if request.json["notes"] else ":"
     prompt = (
-        "You are an expert in your field and an excellent writer. "
-        "Your content is insightful and engaging."
-        "You structure your text to be easy to read and understand, "
-        "for example by using headlines and lists.\n"
-        "\n"
-        f"You are now writing a {request.json['type']}"
-        f"{' with these criteria' if any_criteria else ''}:\n"
-        f"{'Topic:' + request.json['topic'] + chr(10) if request.json['topic'] else ''}"
-        f"{'Style: ' + request.json['style'] + chr(10) if request.json['style'] else ''}"
-        f"{'Audience: ' + request.json['audience'] + chr(10) if request.json['audience'] else ''}"
-        f"{'Other notes: ' + request.json['notes'] + chr(10) if request.json['notes'] else ''}"
-        "\n"
-        "Here is your final version:\n"
-        "\n"
+        f"Write a well structured{style_prompt} {request.json['type']}"
+        f"{audience_prompt} about {topic_prompt}{notes_prompt}\n\n"
         f"{request.json['content']}"
-    )[-2000:]
+    )
+    prompt_trunc = " ".join(prompt.split(" ")[-500:])
+
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
     # flagged = openai.moderate(prompt)
@@ -99,7 +87,9 @@ def suggest() -> dict:
     #     app.logger.info("Prompt flagged")
     #     return "Inappropriate prompt", 400
     try:
-        completion = func_timeout.func_timeout(5, openai.complete, args=(prompt, model))
+        completion = func_timeout.func_timeout(
+            5, openai.complete, args=(prompt_trunc, model)
+        )
     except func_timeout.exceptions.FunctionTimedOut:
         app.logger.error("OpenAI timed out")
         return "OpenAI timed out", 500
