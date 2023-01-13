@@ -20,6 +20,7 @@ const audienceInput = document.getElementById("audience");
 const notesInput = document.getElementById("notes");
 const errorDiv = document.getElementById("error");
 const customType = document.getElementById("custom-type");
+const startButton = document.getElementById("start");
 
 // Show custom type input if "custom" is selected
 typeSelect.addEventListener("change", (event) => {
@@ -96,6 +97,13 @@ contentDiv.addEventListener("input", (event) => {
     }
 })
 
+// Send a request on start button click
+startButton.addEventListener("click", (event) => {
+    if (contentDiv.textContent === "") {
+        sendRequest(0);
+    }
+})
+
 // Clear style of pasted text
 // TODO: Test (style copy seen with some users but can't reproduce)
 // contentDiv.addEventListener("paste", (event) => {
@@ -131,8 +139,19 @@ contentDiv.addEventListener("keydown", (event) => {
             suggestion = suggestion.slice(1);
             const suggestion_span = document.getElementById("suggestion");
             suggestion_span.innerText = suggestion;
-        } else {
-            // If any other key is pressed, remove the suggested text and don't move the cursor
+        } else if (
+            event.key !== "ArrowLeft"
+            && event.key !== "ArrowRight"
+            && event.key !== "ArrowUp"
+            && event.key !== "ArrowDown"
+            && event.key !== "Shift"
+            && event.key !== "Control"
+            && event.key !== "Alt"
+            && event.key !== "Meta"
+            && event.key !== "CapsLock"
+        ) {
+            // If any other non-neutral key is pressed,
+            // remove the suggested text and don't move the cursor
             const suggestions = contentDiv.querySelectorAll("[id^=suggestion]");
             suggestions.forEach((suggestion) => suggestion.remove());
             suggestion = "";
