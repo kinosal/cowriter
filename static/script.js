@@ -74,9 +74,14 @@ const sendRequest = (wait = 1000) => {
                 const new_suggestion = document.createElement("span");
                 new_suggestion.id = "suggestion";
                 new_suggestion.classList.add("text-muted");
-                new_suggestion.innerText = data.suggestion;
+                // Remove potential leading whitespace from first suggestion
+                if (contentDiv.innerText === "") {
+                    suggestion = data.suggestion.trimStart();
+                } else {
+                    suggestion = data.suggestion;
+                }
+                new_suggestion.innerText = suggestion;
                 contentDiv.appendChild(new_suggestion);
-                suggestion = data.suggestion;
             }
         }).catch((error) => {
             errorDiv.innerText = error;
@@ -101,6 +106,13 @@ contentDiv.addEventListener("input", (event) => {
 startButton.addEventListener("click", (event) => {
     if (contentDiv.textContent === "") {
         sendRequest(0);
+        // Move the cursor to the beginning of the content div
+        const range = document.createRange();
+        range.selectNodeContents(contentDiv);
+        range.collapse(true);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
 })
 

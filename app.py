@@ -96,7 +96,7 @@ def suggest() -> dict:
     if completion["status"] == "error":
         app.logger.error(completion["text"])
         return completion["text"], 500
-    return {"suggestion": completion["text"].strip("\n")}
+    return {"suggestion": completion["text"]}
 
 
 if __name__ == "__main__":
