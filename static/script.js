@@ -31,6 +31,45 @@ typeSelect.addEventListener("change", (event) => {
     }
 });
 
+// Send a request on start button click
+startButton.addEventListener("click", (event) => {
+    if (contentDiv.textContent === "") {
+        sendRequest(0);
+        // Move the cursor to the beginning of the content div
+        const range = document.createRange();
+        range.selectNodeContents(contentDiv);
+        range.collapse(true);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        startButton.setAttribute("hidden", "");
+    }
+})
+
+// Show start button again when all content is removed
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'childList' || mutation.type === 'characterData') {
+      if (contentDiv.textContent === "") {
+        startButton.removeAttribute("hidden");
+      }
+    }
+  })
+})
+observer.observe(contentDiv, { childList: true, characterData: true });
+
+// Send a request on new input
+contentDiv.addEventListener("input", (event) => {
+    if (
+        contentDiv.textContent !== ""
+        && suggestion === ""
+        && last_key !== "Backspace"
+        && last_key !== "Delete"
+    ) {
+        sendRequest(500);
+    }
+})
+
 // Send a request to the suggest endpoint after wait
 const sendRequest = (wait = 1000) => {
     errorDiv.setAttribute("hidden", "");
@@ -89,32 +128,6 @@ const sendRequest = (wait = 1000) => {
         })
     }, wait)
 };
-
-// Send a request on new input
-contentDiv.addEventListener("input", (event) => {
-    if (
-        contentDiv.textContent !== ""
-        && suggestion === ""
-        && last_key !== "Backspace"
-        && last_key !== "Delete"
-    ) {
-        sendRequest(500);
-    }
-})
-
-// Send a request on start button click
-startButton.addEventListener("click", (event) => {
-    if (contentDiv.textContent === "") {
-        sendRequest(0);
-        // Move the cursor to the beginning of the content div
-        const range = document.createRange();
-        range.selectNodeContents(contentDiv);
-        range.collapse(true);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-})
 
 // Clear style of pasted text
 // TODO: Test (style copy seen with some users but can't reproduce)
