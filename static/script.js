@@ -1,4 +1,5 @@
 // Define variables
+let debug = document.getElementsByName("debug")[0].content; // used in google.js and inspectlet.js
 let suggest_endpoint = document.getElementsByName("suggest_endpoint")[0].content;
 let csrf = document.getElementsByName("csrf-token")[0].content;
 let timeout;

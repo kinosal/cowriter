@@ -1,4 +1,3 @@
-let debug = document.getElementsByName("debug")[0].content;
 if (debug === "False") {
     window.__insp = window.__insp || [];
     __insp.push(['wid', 593431300]);
