@@ -1,10 +1,3 @@
-// Set the Bootstrap theme of the page based on the user's system preferences
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.setAttribute('data-bs-theme', 'dark')
-} else {
-    document.documentElement.setAttribute('data-bs-theme', 'light')
-}
-
 // Define variables
 let suggest_endpoint = document.getElementsByName("suggest_endpoint")[0].content;
 let csrf = document.getElementsByName("csrf-token")[0].content;
@@ -21,6 +14,16 @@ const notesInput = document.getElementById("notes");
 const errorDiv = document.getElementById("error");
 const customType = document.getElementById("custom-type");
 const startButton = document.getElementById("start");
+const editorRow = document.getElementById("editor");
+
+// Set the Bootstrap theme of the page based on the user's system preferences
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-bs-theme', 'dark')
+    editorRow.classList.add("bg-dark-subtle");
+} else {
+    document.documentElement.setAttribute('data-bs-theme', 'light')
+    editorRow.classList.add("bg-light");
+}
 
 // Show custom type input if "custom" is selected
 typeSelect.addEventListener("change", (event) => {
