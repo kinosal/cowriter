@@ -49,12 +49,14 @@ startButton.addEventListener("click", (event) => {
     }
 })
 
-// Show start button again when all content is removed
+// Show start button only when content is empty
 const observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (mutation.type === 'childList' || mutation.type === 'characterData') {
       if (contentDiv.textContent === "") {
         startButton.removeAttribute("hidden");
+      } else {
+        startButton.setAttribute("hidden", "");
       }
     }
   })
