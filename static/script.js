@@ -39,14 +39,18 @@ typeSelect.addEventListener("change", (event) => {
 startButton.addEventListener("click", (event) => {
     if (contentDiv.textContent === "") {
         sendRequest(0);
-        // Move the cursor to the beginning of the content div
-        const range = document.createRange();
-        range.selectNodeContents(contentDiv);
-        range.collapse(true);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
         startButton.setAttribute("hidden", "");
+        // Move the cursor to the beginning of the content div
+        // Wait a bit to reduce the time no suggestion is shown
+        setTimeout(() => {
+            const range = document.createRange();
+            range.selectNodeContents(contentDiv);
+            range.collapse(true);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        , 500);
     }
 })
 
