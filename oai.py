@@ -49,16 +49,31 @@ class Openai:
         }
         """
         try:
-            response = openai.Completion.create(
-                prompt=prompt,
-                model=model,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            return {
-                "status": "response",
-                "text": response["choices"][0]["text"],
-            }
+            if "text" in model:
+                response = openai.Completion.create(
+                    prompt=prompt,
+                    model=model,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+                return {
+                    "status": "response",
+                    "text": response["choices"][0]["text"],
+                }
+            else:
+                response = openai.ChatCompletion.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": "You are an expert copywriter."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+                return {
+                    "status": "response",
+                    "text": " " + response["choices"][0]["message"]["content"],
+                }
 
         except Exception as e:
             self.logger.error(f"OpenAI API error: {e}")

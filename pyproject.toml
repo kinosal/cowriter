@@ -6,16 +6,16 @@ authors = ["Nikolas Schriefer <info@nikolasschriefer.de>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Flask = "^2.2.2"
-openai = "^0.26.0"
-zappa = "^0.56.1"
-Flask-WTF = "^1.0.1"
-func-timeout = "^4.3.5"
-sentry-sdk = {version = "^1.12.1", extras = ["flask"]}
+Flask = "^2.2"
+openai = "^0.27"
+zappa = "^0.56"
+Flask-WTF = "^1.0"
+func-timeout = "^4.3"
+sentry-sdk = {version = "^1.12", extras = ["flask"]}
 
 [tool.poetry.dev-dependencies]
-python-dotenv = "^0.21.0"
-black = "^22.12.0"
+python-dotenv = "^0.21"
+black = "^22.12"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
