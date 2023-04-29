@@ -64,11 +64,11 @@ def suggest() -> dict:
 
     if session["n_requests"] % 50 == 0:
         return "Too many requests, please wait a few seconds", 429
-    if session["n_requests"] <= 20:
-        model = "text-davinci-003"
-    else:
-        model = "text-curie-001"
-    # model = "gpt-3.5-turbo"  # ChatGPT
+    # if session["n_requests"] <= 20:
+    #     model = "text-davinci-003"
+    # else:
+    #     model = "text-curie-001"
+    model = "gpt-3.5-turbo"  # ChatGPT
 
     style_prompt = f", {request.json['style']}" if request.json["style"] else ""
     audience_prompt = f" for {request.json['audience']}" if request.json["audience"] else ""
