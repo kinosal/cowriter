@@ -2,6 +2,7 @@
 
 # Import from standard library
 import os
+import time
 
 # Import from 3rd party libraries
 from flask import Flask, request, render_template, send_from_directory, session
@@ -62,12 +63,10 @@ def suggest() -> dict:
     request_data["ip"] = request.remote_addr
     app.logger.info(request_data)
 
-    if session["n_requests"] % 50 == 0:
+    if session["n_requests"] % 40 == 0:
+        time.sleep(1)
         return "Too many requests, please wait a few seconds", 429
-    # if session["n_requests"] <= 20:
-    #     model = "text-davinci-003"
-    # else:
-    #     model = "text-curie-001"
+    # model = "text-davinci-003" if session["n_requests"] <= 20 else "text-curie-001"
     model = "gpt-3.5-turbo"  # ChatGPT
 
     style_prompt = f", {request.json['style']}" if request.json["style"] else ""

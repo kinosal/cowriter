@@ -33,14 +33,14 @@ class Openai:
     def complete(
         self,
         prompt: str,
-        model: str = "text-davinci-003",
+        model: str,
         temperature: float = 0.7,
         max_tokens: int = 24,
     ) -> dict:
         """Call OpenAI GPT Completion with text prompt.
         Args:
             prompt: text prompt
-            model: OpenAI model name
+            model: OpenAI model name, e.g. "text-davinci-003"
             temperature: float between 0 and 1
             max_tokens: int between 1 and 2048
         Returns: {
