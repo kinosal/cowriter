@@ -63,7 +63,7 @@ def suggest() -> dict:
     request_data["ip"] = request.remote_addr
     app.logger.info(request_data)
 
-    if session["n_requests"] % 40 == 0:
+    if session["n_requests"] % 25 == 0:
         time.sleep(1)
         return "Too many requests, please wait a few seconds", 429
     # model = "text-davinci-003" if session["n_requests"] <= 20 else "text-curie-001"
