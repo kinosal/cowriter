@@ -67,7 +67,7 @@ def suggest() -> dict:
         time.sleep(1)
         return "Too many requests, please wait a few seconds", 429
     # model = "text-davinci-003" if session["n_requests"] <= 20 else "text-curie-001"
-    model = "gpt-3.5-turbo"  # ChatGPT
+    model = "gpt-3.5-turbo"
 
     style_prompt = f", {request.json['style']}" if request.json["style"] else ""
     audience_prompt = f" for {request.json['audience']}" if request.json["audience"] else ""
@@ -78,7 +78,7 @@ def suggest() -> dict:
         f"{audience_prompt} about {topic_prompt}{notes_prompt}\n\n"
         f"{request.json['content']}"
     )
-    prompt_trunc = " ".join(prompt.split(" ")[-500:])
+    prompt_trunc = " ".join(prompt.split(" ")[-400:])
 
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
