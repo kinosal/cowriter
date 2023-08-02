@@ -63,8 +63,8 @@ def suggest() -> dict:
     request_data["ip"] = request.remote_addr
     app.logger.info(request_data)
 
-    if session["n_requests"] % 25 == 0:
-        time.sleep(1)
+    if session["n_requests"] % 10 == 0:
+        time.sleep(2)
         return "Too many requests, please wait a few seconds", 429
     # model = "text-davinci-003" if session["n_requests"] <= 20 else "text-curie-001"
     model = "gpt-3.5-turbo"
@@ -76,9 +76,9 @@ def suggest() -> dict:
     prompt = (
         f"Write a well structured{style_prompt} {request.json['type']}"
         f"{audience_prompt} about {topic_prompt}{notes_prompt}\n\n"
-        f"{request.json['content']}"
+        f"[...]\n\n"
+        f"{' '.join(request.json['content'].split(' ')[-200:])}"
     )
-    prompt_trunc = " ".join(prompt.split(" ")[-400:])
 
     openai = oai.Openai(app.logger)
     # TODO: Add moderation without making the overall response time too slow
@@ -88,7 +88,7 @@ def suggest() -> dict:
     #     return "Inappropriate prompt", 400
     try:
         completion = func_timeout.func_timeout(
-            5, openai.complete, args=(prompt_trunc, model)
+            5, openai.complete, args=(prompt, model)
         )
     except func_timeout.exceptions.FunctionTimedOut:
         app.logger.error("OpenAI timed out")
