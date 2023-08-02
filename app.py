@@ -70,9 +70,17 @@ def suggest() -> dict:
     model = "gpt-3.5-turbo"
 
     style_prompt = f", {request.json['style']}" if request.json["style"] else ""
-    audience_prompt = f" for {request.json['audience']}" if request.json["audience"] else ""
-    topic_prompt = f"{request.json['topic']}" if request.json["topic"] else "an interesting topic"
-    notes_prompt = f", considering these notes:\n{request.json['notes']}" if request.json["notes"] else ":"
+    audience_prompt = (
+        f" for {request.json['audience']}" if request.json["audience"] else ""
+    )
+    topic_prompt = (
+        f"{request.json['topic']}" if request.json["topic"] else "an interesting topic"
+    )
+    notes_prompt = (
+        f", considering these notes:\n{request.json['notes']}"
+        if request.json["notes"]
+        else ":"
+    )
     prompt = (
         f"Write a well structured{style_prompt} {request.json['type']}"
         f"{audience_prompt} about {topic_prompt}{notes_prompt}\n\n"
@@ -87,9 +95,7 @@ def suggest() -> dict:
     #     app.logger.info("Prompt flagged")
     #     return "Inappropriate prompt", 400
     try:
-        completion = func_timeout.func_timeout(
-            5, openai.complete, args=(prompt, model)
-        )
+        completion = func_timeout.func_timeout(5, openai.complete, args=(prompt, model))
     except func_timeout.exceptions.FunctionTimedOut:
         app.logger.error("OpenAI timed out")
         return "OpenAI timed out", 500

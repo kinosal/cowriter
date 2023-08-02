@@ -64,7 +64,10 @@ class Openai:
                 response = openai.ChatCompletion.create(
                     model=model,
                     messages=[
-                        {"role": "system", "content": "You are an expert copywriter. Complete the following text:"},
+                        {
+                            "role": "system",
+                            "content": "You are an expert copywriter. Complete the following text:",
+                        },
                         {"role": "user", "content": prompt},
                     ],
                     temperature=temperature,
