@@ -66,7 +66,7 @@ class Openai:
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are an expert copywriter. Complete the following text:",
+                            "content": "You are an expert copywriter.",
                         },
                         {"role": "user", "content": prompt},
                     ],

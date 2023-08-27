@@ -16,6 +16,8 @@ sentry-sdk = {version = "^1.12", extras = ["flask"]}
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.21"
 black = "^22.12"
+pydocstyle = "^6.3"
+pycodestyle = "^2.11"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
