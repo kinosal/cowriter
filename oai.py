@@ -40,7 +40,7 @@ class Openai:
         """Call OpenAI GPT Completion with text prompt.
         Args:
             prompt: text prompt
-            model: OpenAI model name, e.g. "text-davinci-003"
+            model: OpenAI chat model name, e.g. "gpt-3.5-turbo"
             temperature: float between 0 and 1
             max_tokens: int between 1 and 2048
         Returns: {
@@ -49,34 +49,22 @@ class Openai:
         }
         """
         try:
-            if "text" in model:
-                response = openai.Completion.create(
-                    prompt=prompt,
-                    model=model,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                )
-                return {
-                    "status": "response",
-                    "text": response["choices"][0]["text"],
-                }
-            else:
-                response = openai.ChatCompletion.create(
-                    model=model,
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You are an expert copywriter.",
-                        },
-                        {"role": "user", "content": prompt},
-                    ],
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                )
-                return {
-                    "status": "response",
-                    "text": " " + response["choices"][0]["message"]["content"],
-                }
+            response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an expert copywriter.",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            return {
+                "status": "response",
+                "text": " " + response["choices"][0]["message"]["content"],
+            }
 
         except Exception as e:
             self.logger.error(f"OpenAI API error: {e}")

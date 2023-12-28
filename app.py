@@ -66,7 +66,6 @@ def suggest() -> dict:
     if session["n_requests"] % 10 == 0:
         time.sleep(2)
         return "Too many requests, please wait a few seconds", 429
-    # model = "text-davinci-003" if session["n_requests"] <= 20 else "text-curie-001"
     model = "gpt-3.5-turbo"
 
     style_prompt = f", {request.json['style']}" if request.json["style"] else ""
@@ -89,11 +88,6 @@ def suggest() -> dict:
     )
 
     openai = oai.Openai(app.logger)
-    # TODO: Add moderation without making the overall response time too slow
-    # flagged = openai.moderate(prompt)
-    # if flagged:
-    #     app.logger.info("Prompt flagged")
-    #     return "Inappropriate prompt", 400
     try:
         completion = func_timeout.func_timeout(5, openai.complete, args=(prompt, model))
     except func_timeout.exceptions.FunctionTimedOut:

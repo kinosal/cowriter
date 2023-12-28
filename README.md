@@ -4,9 +4,9 @@ Live version of this app at [ai-cowriter.com](https://ai-cowriter.com)
 
 ## Description
 
-This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion - powered by OpenAI's [GPT-3 model](https://beta.openai.com/docs/models/overview) - will suggest words and phrases to complete your text.
+This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion - powered by OpenAI's [GPT models](https://platform.openai.com/docs/models/overview) - will suggest words and phrases to complete your text.
 
-The text prompt creation form only requires an indication of what type of text you are writing (blog post, LinkedIn post, Tweet, or Email). It optionally accepts a topic and mood parameter. The app then generates a prompt with an instruction to suggest the next words and sends this to the OpenAI API which - using the GPT-3 Davinci engine that has been trained on a lot of publicly available text content - predicts the next likely to be used tokens.
+The text prompt creation form only requires an indication of what type of text you are writing (blog post, LinkedIn post, Tweet, or Email). It optionally accepts a topic and mood parameter. The app then generates a prompt with an instruction to suggest the next words and sends this to the OpenAI API which predicts the next likely to be used tokens.
 
 The UI displays the suggested completion and allows the user to accept or reject it to continue writing.
 
