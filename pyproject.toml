@@ -6,16 +6,16 @@ authors = ["Nikolas Schriefer <info@nikolasschriefer.de>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Flask = "^2.2"
-openai = "^0.27"
-zappa = "^0.57"
+Flask = "^3.0"
+openai = "^1.6"
+zappa = "^0.58"
 Flask-WTF = "^1.0"
 func-timeout = "^4.3"
 sentry-sdk = {version = "^1.12", extras = ["flask"]}
 
 [tool.poetry.dev-dependencies]
-python-dotenv = "^0.21"
-black = "^22.12"
+python-dotenv = "^1.0"
+black = "^23.12"
 pydocstyle = "^6.3"
 pycodestyle = "^2.11"
 

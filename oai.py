@@ -4,10 +4,10 @@
 import os
 
 # Import from 3rd party libraries
-import openai
+from openai import OpenAI
 
-# Assign credentials from environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 class Openai:
@@ -23,7 +23,7 @@ class Openai:
         Returns: boolean if flagged
         """
         try:
-            response = openai.Moderation.create(prompt)
+            response = client.moderations.create(prompt)
             return response["results"][0]["flagged"]
 
         except Exception as e:
@@ -49,7 +49,7 @@ class Openai:
         }
         """
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model=model,
                 messages=[
                     {
@@ -63,7 +63,7 @@ class Openai:
             )
             return {
                 "status": "response",
-                "text": " " + response["choices"][0]["message"]["content"],
+                "text": " " + response.choices[0].message.content,
             }
 
         except Exception as e:
