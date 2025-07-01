@@ -1,7 +1,5 @@
 # Autocomplete text with this AI Cowriter
 
-Live version of this app at [ai-cowriter.com](https://ai-cowriter.com)
-
 ## Description
 
 This mini-app acts as your cowriter for any kind of text. Just start to type and your AI companion - powered by OpenAI's [GPT models](https://platform.openai.com/docs/models/overview) - will suggest words and phrases to complete your text.
